@@ -644,9 +644,13 @@ function downloadAll(){
 // display falls back to Times. Values are copied from type.css and must track
 // it. Figures use the body face with tabular-nums, as they do in the app.
 const DOC_CSS=`*{box-sizing:border-box;margin:0;padding:0}
+@font-face{font-family:"Plantin fallback";src:local("TimesNewRomanPSMT"),local("Times New Roman");font-weight:400;font-style:normal;size-adjust:104%;ascent-override:69.5%;descent-override:30.5%;line-gap-override:0%}
+@font-face{font-family:"Plantin fallback";src:local("TimesNewRomanPS-ItalicMT"),local("Times New Roman Italic");font-weight:400;font-style:italic;size-adjust:104%;ascent-override:69.5%;descent-override:30.5%;line-gap-override:0%}
+@font-face{font-family:"Plantin fallback";src:local("TimesNewRomanPS-BoldMT"),local("Times New Roman Bold");font-weight:700;font-style:normal;size-adjust:104%;ascent-override:69.5%;descent-override:30.5%;line-gap-override:0%}
+@font-face{font-family:"Plantin fallback";src:local("TimesNewRomanPS-BoldItalicMT"),local("Times New Roman Bold Italic");font-weight:700;font-style:italic;size-adjust:104%;ascent-override:69.5%;descent-override:30.5%;line-gap-override:0%}
 :root{--bg:#fff;--fg:#111;--dim:#6f6f6f;--faint:#9a9a9a;--rule:#dcdcdc;--wash:#f2f2f7;
 --blue:#0000ee;--purple:#551a8b;
---body:"Plantin","Plantin MT Pro","Times New Roman",Times,"Liberation Serif","Hiragino Mincho ProN","Yu Mincho",serif;
+--body:"Plantin","Plantin MT Pro","Plantin fallback","Times New Roman",Times,"Liberation Serif","Hiragino Mincho ProN","Yu Mincho",serif;
 --display:"Times New Roman",Times,serif;
 --t1:22px;--t2:16px;--t3:14px;--t4:12.5px;--t5:11px;--t6:10.5px;
 --s1:6px;--s2:12px;--s3:22px;--s4:40px;--s5:72px;--track:-.01em;--hair:1px}
