@@ -15,7 +15,7 @@ from concurrent.futures import ThreadPoolExecutor
 HERE = os.path.dirname(os.path.abspath(__file__))
 DATA = os.path.join(HERE, "data")
 ART  = os.path.join(DATA, "art")
-UA   = {"User-Agent": "AlbumRater/1.0 ( personal-offline-use )"}
+UA   = {"User-Agent": "rate-my-library/1.0 ( personal-offline-use )"}
 
 # ---------------------------------------------------------------- normalizing
 

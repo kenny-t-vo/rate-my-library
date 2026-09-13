@@ -13,8 +13,6 @@
 import { putAlbum } from "./store.js";
 import { recomputeSpins } from "./aggregate.js";
 
-const UA_NOTE = "rate-my-library";
-
 // one bucket per host so a slow MusicBrainz queue never stalls cover art
 class Limiter {
   constructor(perSec, burst = 1, timeout = 10000) {
