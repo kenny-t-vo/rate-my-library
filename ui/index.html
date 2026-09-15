@@ -14,7 +14,6 @@
 :root{
   /* ── the knobs ──────────────────────────────────────────────────── */
   --pad:clamp(var(--s3),3.4vw,var(--s4));  /* viewport to chrome */
-  --hair:1px;
   --fade:150ms;        /* the only transition duration in the chrome */
   --snap:90ms;         /* pointer feedback on the scale; keys never wait on it */
 
@@ -28,11 +27,6 @@
   --bar:7px;           /* year and distribution chart bars */
   --dot:5px;
   --prog:132px;
-
-  /* tracking. --track in type.css is the body default; these are the two
-     places that need their own. */
-  --track-lbl:.09em;   /* labels. a serif needs less than a mono at one size */
-  --track-tight:-.018em;  /* the display face at t1 and t2 */
 
   /* Redaction 35 at line-height 1.06: the distance from box top to cap top,
      so a title seats on the cover's top edge. Measured with canvas metrics,
@@ -62,7 +56,7 @@
   --trk-bar-x:27px;      /* bar starts under the title, clear of the number */
   --ri-img:34px;
   --out-w:34px;
-  --toast-up:98px;
+  --ctl:15px; --thumb-w:7px; --thumb-h:11px;   /* slider box and thumb */
   --yr-y:34px; --yr-n:42px;   /* plays by year: year, count */
   --dst-s:26px; --dst-n:20px; /* distribution: score, count */
 }
@@ -76,7 +70,7 @@ a:hover{text-decoration-thickness:var(--ul)}
 button{font:inherit;background:none;border:0;color:inherit;cursor:pointer}
 
 /* blue is live or current, purple is done. every use below follows it. */
-.lbl{font:var(--t6)/1 var(--body);letter-spacing:var(--track-lbl);color:var(--faint)}
+.lbl{font:var(--t6)/1 var(--body);letter-spacing:var(--track-label);color:var(--faint)}
 .lnk{color:var(--blue);text-decoration:underline;text-underline-offset:var(--ul);cursor:pointer}
 .lnk:hover{text-decoration-thickness:var(--ul)}
 .lnk.on{color:var(--purple)}
@@ -87,7 +81,7 @@ button{font:inherit;background:none;border:0;color:inherit;cursor:pointer}
 header{flex:none;display:flex;align-items:baseline;gap:var(--s3);
   padding:calc(var(--s2)*.8) var(--pad) var(--s1);
   border-bottom:var(--hair) solid var(--rule2)}
-header .id{font:var(--t6)/1 var(--body);letter-spacing:var(--track-lbl)}
+header .id{font:var(--t6)/1 var(--body);letter-spacing:var(--track-label)}
 header .sp{flex:1}
 header nav{display:flex;gap:var(--s2);font-size:var(--t4)}
 #prog{position:relative;width:var(--prog);height:var(--prog-h);background:var(--rule);top:calc(-1 * var(--hair))}
@@ -107,7 +101,7 @@ main>*{padding:var(--s3) var(--pad);min-height:0;overflow:hidden}
 /* ══ left column ═════════════════════════════════════════════════════ */
 .navlist{display:flex;flex-direction:column;gap:calc(var(--s1)*.8);font-size:var(--t4)}
 .navlist div{display:flex;gap:var(--s1);align-items:baseline}
-.navlist .t{color:var(--faint);font:var(--t6)/1 var(--body);font-variant-numeric:tabular-nums}
+.navlist .t{color:var(--faint);font:var(--t6)/1 var(--figures);font-variant-numeric:tabular-nums}
 .navlist kbd{margin-left:auto;font:var(--t6)/1 var(--body);color:var(--faint)}
 .sect{display:flex;flex-direction:column;gap:var(--s1)}
 .sect .hd{padding-bottom:calc(var(--s1)*.8);border-bottom:var(--hair) solid var(--rule)}
@@ -115,7 +109,7 @@ main>*{padding:var(--s3) var(--pad);min-height:0;overflow:hidden}
   font-size:var(--t4);line-height:1.62}
 .kv dt{color:var(--dim)}
 /* values meet the rule's right edge */
-.kv dd{font:var(--t5)/1.62 var(--body);font-variant-numeric:tabular-nums;text-align:right}
+.kv dd{font:var(--t5)/1.62 var(--figures);font-variant-numeric:tabular-nums;text-align:right}
 
 /* ══ centre: the album ═══════════════════════════════════════════════ */
 .head{display:flex;align-items:baseline;gap:var(--s1);margin-bottom:calc(var(--s2)*1.5);flex:none}
@@ -126,19 +120,19 @@ main>*{padding:var(--s3) var(--pad);min-height:0;overflow:hidden}
 .cover img{width:100%;height:100%;object-fit:cover;display:block;opacity:1;
   transition:opacity var(--fade) ease}
 .cover.load img{opacity:0}
-.cover.none::after{content:"no cover";position:absolute;inset:0;display:grid;place-items:center;
-  font:var(--t6)/1 var(--body);letter-spacing:var(--track-lbl);color:var(--faint)}
+.cover.none::after{content:"no cover.";position:absolute;inset:0;display:grid;place-items:center;
+  font:var(--t6)/1 var(--body);letter-spacing:var(--track-label);color:var(--faint)}
 .titles{min-width:0;flex:1;display:flex;flex-direction:column}
 
 /* the one large thing on this screen. --cap lifts the box so the capital,
    not the ascender space above it, meets the cover's top edge. */
 h1{font:var(--t1)/1.06 var(--display);font-weight:400;
-  letter-spacing:var(--track-tight);overflow-wrap:anywhere;
+  letter-spacing:var(--track-t1);overflow-wrap:anywhere;
   margin:var(--cap) 0 var(--s1)}
 h2{font-size:var(--t3);font-weight:400;margin-bottom:var(--s2);overflow-wrap:anywhere}
 h2 a{text-underline-offset:calc(var(--ul) * 1.5)}
 .tagrow{display:flex;flex-wrap:wrap;gap:calc(var(--s1)*.8) var(--s1)}
-.tag{font:var(--t6)/1 var(--body);letter-spacing:var(--track-lbl);color:var(--dim);
+.tag{font:var(--t6)/1 var(--body);letter-spacing:var(--track-label);color:var(--dim);
   border:var(--hair) solid var(--rule);padding:calc(var(--s1)*.7) calc(var(--s1)*.9)}
 .tag.hot{border-color:var(--blue);color:var(--blue)}
 .tag.warn{border-color:var(--purple);color:var(--purple)}
@@ -149,16 +143,16 @@ h2 a{text-underline-offset:calc(var(--ul) * 1.5)}
 .calib b{font-weight:400;font-variant-numeric:tabular-nums;color:var(--fg)}
 
 /* ══ rating row ══════════════════════════════════════════════════════ */
-.ctx{margin-top:var(--s3);flex:none;max-width:var(--measure);padding-bottom:calc(var(--s1)/2)}
+.ctx{margin-top:var(--s3);flex:none;max-width:var(--measure);padding-bottom:var(--s0)}
 .ctxHd{display:flex;justify-content:space-between;align-items:baseline;
   padding-bottom:var(--s1);border-bottom:var(--hair) solid var(--rule);margin-bottom:var(--s1)}
 .rate{margin-top:var(--s3);flex:none}
 .rateHd{display:flex;align-items:baseline;gap:var(--s2);padding-bottom:var(--s1);
   border-bottom:var(--hair) solid var(--rule2);margin-bottom:var(--s1)}
 .stars{font-size:var(--t2);letter-spacing:.05em;min-width:var(--stars-w)}
-.rval{font:var(--t4)/1 var(--body);font-variant-numeric:tabular-nums}
-.rval.un{color:var(--faint);font:var(--t6)/1 var(--body);letter-spacing:var(--track-lbl)}
-.scale{display:grid;grid-template-columns:repeat(10,1fr);gap:calc(var(--s1)/2);
+.rval{font:var(--t4)/1 var(--figures);font-variant-numeric:tabular-nums}
+.rval.un{color:var(--faint);font:var(--t6)/1 var(--body);letter-spacing:var(--track-label)}
+.scale{display:grid;grid-template-columns:repeat(10,1fr);gap:var(--s0);
   max-width:var(--measure)}
 /* a row of cells with the chosen one inverted. no transition on the keyed
    path: rating is a keypress and must not wait on paint. */
@@ -167,7 +161,7 @@ h2 a{text-underline-offset:calc(var(--ul) * 1.5)}
   transition:background var(--snap),border-color var(--snap),color var(--snap)}
 .cell .k{display:block;font:var(--t6)/1 var(--body);color:var(--faint);
   margin-bottom:calc(var(--s1)*.7);letter-spacing:.05em}
-.cell .v{display:block;font:var(--t4)/1 var(--body);font-variant-numeric:tabular-nums}
+.cell .v{display:block;font:var(--t4)/1 var(--figures);font-variant-numeric:tabular-nums}
 .cell:hover{border-color:var(--blue);color:var(--blue)}
 .cell:hover .k{color:var(--blue)}
 .cell.on{background:var(--blue);border-color:var(--blue);color:var(--bg)}
@@ -179,12 +173,12 @@ h2 a{text-underline-offset:calc(var(--ul) * 1.5)}
 #noteBox{width:100%;max-width:var(--measure);min-height:var(--note-h);height:var(--note-h);
   border:0;border-bottom:var(--hair) solid var(--rule);background:none;
   font:var(--t4)/1.5 var(--body);letter-spacing:var(--track);color:var(--fg);
-  resize:none;outline:none;padding:calc(var(--s1)/2) 0 var(--s1);
+  resize:none;outline:none;padding:var(--s0) 0 var(--s1);
   transition:height var(--fade) ease,border-color var(--fade)}
 #noteBox:focus{border-bottom-color:var(--blue);height:var(--note-open)}
 #noteBox.has{border-bottom-color:var(--purple)}
 #noteBox::placeholder{color:var(--faint);font-style:italic}
-#noteCount{margin-left:auto;font:var(--t6)/1 var(--body);font-variant-numeric:tabular-nums;
+#noteCount{margin-left:auto;font:var(--t6)/1 var(--figures);font-variant-numeric:tabular-nums;
   color:var(--faint);opacity:0;transition:opacity var(--fade)}
 #noteBox:focus~#noteCount,.note.editing #noteCount{opacity:1}
 #noteCount.over{color:var(--purple)}
@@ -195,7 +189,7 @@ h2 a{text-underline-offset:calc(var(--ul) * 1.5)}
   padding-bottom:var(--s1);border-bottom:var(--hair) solid var(--rule2);
   margin-bottom:var(--s1);flex:none}
 .years{display:flex;flex-direction:column;gap:var(--ul);
-  font:var(--t5)/1.55 var(--body);font-variant-numeric:tabular-nums;flex:none}
+  font:var(--t5)/1.55 var(--figures);font-variant-numeric:tabular-nums;flex:none}
 .years .r{display:grid;grid-template-columns:var(--yr-y) var(--yr-n) 1fr;gap:var(--s1);align-items:center}
 .years .r span:nth-child(2){text-align:right;color:var(--dim)}
 .years .r i{display:block;height:var(--bar);background:var(--blue);opacity:.82}
@@ -209,10 +203,10 @@ h2 a{text-underline-offset:calc(var(--ul) * 1.5)}
 /* leading numbers meet the rule's left edge, counts meet its right */
 .trk{display:grid;grid-template-columns:var(--trk-n) 1fr auto;gap:var(--s1);align-items:baseline;
   padding:calc(var(--s1)*.6) 0;position:relative;border-bottom:var(--hair) solid var(--wash)}
-.trk .n{font:var(--t6)/1.5 var(--body);font-variant-numeric:tabular-nums;
+.trk .n{font:var(--t6)/1.5 var(--figures);font-variant-numeric:tabular-nums;
   color:var(--faint);text-align:left}
 .trk .t{font-size:var(--t4);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.trk .c{font:var(--t5)/1.5 var(--body);font-variant-numeric:tabular-nums;color:var(--dim)}
+.trk .c{font:var(--t5)/1.5 var(--figures);font-variant-numeric:tabular-nums;color:var(--dim)}
 .trk.top .t{color:var(--blue)}
 .trk.unheard{opacity:.42}
 .trk.unheard .n{color:var(--faint)}
@@ -233,12 +227,12 @@ footer{flex:none;border-top:var(--hair) solid var(--rule2);
 /* micro badge, below the scale on purpose: it sits on a 42px square */
 .th.rated::after{content:attr(data-r);position:absolute;left:0;right:0;bottom:0;
   background:var(--purple);color:var(--bg);text-align:center;
-  font:var(--t-badge)/1.5 var(--body);font-variant-numeric:tabular-nums}
+  font:var(--t-badge)/1.5 var(--figures);font-variant-numeric:tabular-nums}
 .th.cur.rated::after{background:var(--blue)}
 .statusbar{display:flex;align-items:baseline;gap:var(--s2)}
 .statusbar .sp{flex:1}
 #save{display:flex;align-items:center;gap:calc(var(--s1)*.8)}
-#save .dot{width:var(--dot);height:var(--dot);border-radius:50%;background:var(--blue);flex:none}
+#save .dot{width:var(--dot);height:var(--dot);background:var(--blue);flex:none}
 #save.pend .dot{background:var(--purple)}
 #save.err .dot{background:var(--bg);border:var(--hair) solid var(--purple)}
 
@@ -250,7 +244,7 @@ footer{flex:none;border-top:var(--hair) solid var(--rule2);
 .card{background:var(--bg);border:var(--hair) solid var(--rule2);width:min(var(--card-w),100%);
   padding:var(--s3) calc(var(--s3)*1.3) calc(var(--s3)*1.3)}
 .card h3{font:var(--t2)/1.2 var(--display);font-weight:400;
-  letter-spacing:var(--track-tight);margin-bottom:calc(var(--s1)/2)}
+  letter-spacing:var(--track-t2);margin-bottom:var(--s0)}
 .card .cs{color:var(--dim);font-size:var(--t4);margin-bottom:calc(var(--s2)*1.5);line-height:1.5}
 .grp{margin-bottom:calc(var(--s3)*1.1)}
 .grp>.hd{padding-bottom:var(--s1);border-bottom:var(--hair) solid var(--rule2);
@@ -258,24 +252,36 @@ footer{flex:none;border-top:var(--hair) solid var(--rule2);
 .opt{display:grid;grid-template-columns:var(--opt-label) 1fr auto;gap:var(--s2);align-items:center;
   padding:var(--s1) 0;font-size:var(--t3)}
 .opt label{color:var(--dim)}
-.opt input[type=range]{width:100%;accent-color:var(--blue)}
-.opt output{font:var(--t5)/1 var(--body);font-variant-numeric:tabular-nums;
+/* hairline track, ink thumb, blue on focus, nothing filled */
+.opt input[type=range]{width:100%;height:var(--ctl);margin:0;
+  -webkit-appearance:none;appearance:none;background:transparent}
+.opt input[type=range]::-webkit-slider-runnable-track{height:var(--hair);background:var(--rule);border:0}
+.opt input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:var(--thumb-w);
+  height:var(--thumb-h);background:var(--fg);border:0;
+  margin-top:calc((var(--hair) - var(--thumb-h)) / 2)}
+.opt input[type=range]::-moz-range-track{height:var(--hair);background:var(--rule);border:0}
+.opt input[type=range]::-moz-range-thumb{width:var(--thumb-w);height:var(--thumb-h);
+  background:var(--fg);border:0;border-radius:0}
+.opt input[type=range]:focus{outline:0}
+.opt input[type=range]:focus::-webkit-slider-thumb{background:var(--blue)}
+.opt output{font:var(--t5)/1 var(--figures);font-variant-numeric:tabular-nums;
   color:var(--fg);min-width:var(--out-w);text-align:right}
+/* a field is a hairline under the text, blue while it has focus */
 select,input[type=text]{font:var(--t3)/1.3 var(--body);letter-spacing:var(--track);
-  color:var(--fg);background:var(--bg);border:var(--hair) solid var(--rule);
-  padding:calc(var(--s1)*.9) var(--s1);width:100%;outline:none}
-select:focus,input[type=text]:focus{border-color:var(--blue)}
-.tog{justify-self:end;font:var(--t6)/1 var(--body);letter-spacing:var(--track-lbl);
+  color:var(--fg);background:var(--bg);border:0;border-bottom:var(--hair) solid var(--rule);
+  padding:var(--s0) 0;width:100%;outline:none}
+select:focus,input[type=text]:focus{border-bottom-color:var(--blue)}
+.tog{justify-self:end;font:var(--t6)/1 var(--body);letter-spacing:var(--track-label);
   border:var(--hair) solid var(--rule);padding:calc(var(--s1)*.8) calc(var(--s1)*1.4);
   cursor:pointer;min-width:var(--stars-w);text-align:center}
 .tog.on{background:var(--blue);border-color:var(--blue);color:var(--bg)}
 .snap{display:grid;grid-template-columns:1fr auto auto auto;gap:var(--s2);align-items:baseline;
   padding:var(--s1) 0;border-bottom:var(--hair) solid var(--rule);font-size:var(--t4)}
-.snap .m{font:var(--t5)/1 var(--body);font-variant-numeric:tabular-nums;color:var(--dim)}
+.snap .m{font:var(--t5)/1 var(--figures);font-variant-numeric:tabular-nums;color:var(--dim)}
 .keys{display:grid;grid-template-columns:auto 1fr;gap:var(--s1) var(--s2);
   font-size:var(--t4);align-items:baseline}
 .keys kbd{font:var(--t6)/1 var(--body);border:var(--hair) solid var(--rule);
-  padding:calc(var(--s1)/2) var(--s1);white-space:nowrap}
+  padding:var(--s0) var(--s1);white-space:nowrap}
 .keys span{color:var(--dim)}
 .rowbtns{display:flex;gap:var(--s2);margin-top:var(--s1);font-size:var(--t4)}
 .res{max-height:52vh;overflow-y:auto;margin-top:var(--s2)}
@@ -285,18 +291,8 @@ select:focus,input[type=text]:focus{border-color:var(--blue)}
 .ri img{width:var(--ri-img);height:var(--ri-img);object-fit:cover;background:var(--wash);display:block}
 .ri .a{font-size:var(--t3)}
 .ri .b{font-size:var(--t4);color:var(--dim)}
-.ri .c{font:var(--t5)/1 var(--body);font-variant-numeric:tabular-nums;
+.ri .c{font:var(--t5)/1 var(--figures);font-variant-numeric:tabular-nums;
   color:var(--dim);text-align:right;white-space:nowrap}
-#toast{position:fixed;left:50%;bottom:var(--toast-up);transform:translate(-50%,var(--s1));z-index:60;
-  background:var(--bg);border:var(--hair) solid var(--rule2);
-  padding:var(--s1) calc(var(--s2)*1.25);font-size:var(--t4);opacity:0;pointer-events:none;
-  transition:opacity var(--fade),transform var(--fade)}
-#toast.on{opacity:1;transform:translate(-50%,0)}
-#banner{position:fixed;left:0;right:0;top:0;z-index:70;background:var(--purple);
-  color:var(--bg);padding:var(--s1) var(--pad);font-size:var(--t4);display:none;
-  align-items:center;gap:var(--s2)}
-#banner.on{display:flex}
-#banner a{color:var(--bg)}
 
 /* short windows: tighten the fixed blocks so the year chart never ends up
    behind the filmstrip. colM still scrolls as a last resort. */
@@ -324,7 +320,6 @@ select:focus,input[type=text]:focus{border-color:var(--blue)}
 }
 </style></head>
 <body>
-<div id="banner"><span id="bannerT"></span><a href="#" id="bannerR">reload</a></div>
 <div id="app">
 
 <header>
@@ -333,12 +328,12 @@ select:focus,input[type=text]:focus{border-color:var(--blue)}
   <span class="lbl" id="hcount">0 / 0</span>
   <span class="sp"></span>
   <nav>
-    <a class="lnk" data-ov="ovFind">search</a>
-    <a class="lnk" data-ov="ovSet">settings</a>
-    <a class="lnk" data-ov="ovSnap">saves</a>
-    <a class="lnk" data-ov="ovOut">export</a>
-    <a class="lnk" data-ov="ovKeys">keys</a>
-    <a class="lnk" data-ov="ovAbout">about</a>
+    <a class="lnk" data-ov="ovFind">search.</a>
+    <a class="lnk" data-ov="ovSet">settings.</a>
+    <a class="lnk" data-ov="ovSnap">saves.</a>
+    <a class="lnk" data-ov="ovOut">export.</a>
+    <a class="lnk" data-ov="ovKeys">keys.</a>
+    <a class="lnk" data-ov="ovAbout">about.</a>
   </nav>
 </header>
 
@@ -381,7 +376,7 @@ select:focus,input[type=text]:focus{border-color:var(--blue)}
         <span class="stars" id="stars"></span>
         <span class="rval un" id="rval">unrated</span>
         <span class="sp" style="flex:1"></span>
-        <span class="lbl">press 1 to 0</span>
+        <span class="lbl">press 1 to 0.</span>
       </div>
       <div class="scale" id="scale"></div>
     </div>
@@ -389,7 +384,7 @@ select:focus,input[type=text]:focus{border-color:var(--blue)}
     <div class="note" id="noteWrap">
       <div class="noteHd">
         <span class="lbl">note.</span>
-        <span class="lbl" style="color:var(--faint)">press n</span>
+        <span class="lbl">press n.</span>
         <span id="noteCount"></span>
       </div>
       <textarea id="noteBox" maxlength="500" rows="1" spellcheck="false"
@@ -421,7 +416,7 @@ select:focus,input[type=text]:focus{border-color:var(--blue)}
     <span class="lbl" id="stat"></span>
     <span class="sp"></span>
     <span class="lbl" id="last"></span>
-    <span id="save" class="lbl"><span class="dot"></span><span id="saveT">saved</span></span>
+    <span id="save" class="lbl"><span class="dot"></span><span id="saveT">saved.</span></span>
   </div>
 </footer>
 </div>
@@ -455,10 +450,10 @@ select:focus,input[type=text]:focus{border-color:var(--blue)}
     <div class="opt"><label></label><span class="lbl" id="sCount"></span><span></span></div>
   </div>
   <div class="grp"><div class="hd lbl">behaviour.</div>
-    <div class="opt"><label>advance after rating</label><span class="lbl">move to the next album automatically</span><span class="tog" id="tAdv">on</span></div>
-    <div class="opt"><label>cover filmstrip</label><span class="lbl">show the queue along the bottom</span><span class="tog" id="tCar">on</span></div>
-    <div class="opt"><label>confirm hiding</label><span class="lbl">ask before “not an album”</span><span class="tog" id="tConf">off</span></div>
-    <div class="opt"><label>whole tracklist</label><span class="lbl">show songs you have never played, in album order</span><span class="tog" id="tFull">on</span></div>
+    <div class="opt"><label>advance after rating</label><span class="lbl">move to the next album automatically.</span><span class="tog" id="tAdv">on</span></div>
+    <div class="opt"><label>cover filmstrip</label><span class="lbl">show the queue along the bottom.</span><span class="tog" id="tCar">on</span></div>
+    <div class="opt"><label>confirm hiding</label><span class="lbl">ask before “not an album”.</span><span class="tog" id="tConf">off</span></div>
+    <div class="opt"><label>whole tracklist</label><span class="lbl">show songs you have never played, in album order.</span><span class="tog" id="tFull">on</span></div>
     <div class="opt"><label>listen links</label><select id="sListen">
       <option value="spotify">Spotify</option>
       <option value="apple">Apple Music</option>
@@ -474,7 +469,7 @@ select:focus,input[type=text]:focus{border-color:var(--blue)}
     </select><span></span></div>
     <div class="opt"><label>file or folder</label>
       <input type="text" id="impPath" placeholder="~/Downloads/scrobbles-name-0000.csv"><span></span></div>
-    <div class="rowbtns"><a class="lnk" id="impGo">import and rebuild</a>
+    <div class="rowbtns"><a class="lnk" id="impGo">import and rebuild.</a>
       <span class="lbl" id="impMsg"></span></div>
     <div id="impNote" style="font-size:var(--t4);color:var(--dim);line-height:1.55;margin-top:12px"></div>
     <div style="font-size:var(--t4);color:var(--dim);line-height:1.55;margin-top:10px">
@@ -482,7 +477,7 @@ select:focus,input[type=text]:focus{border-color:var(--blue)}
       position in the file, so a newer export of the same library keeps every score.
       A save state is written before the rebuild either way.</div>
   </div>
-  <div class="rowbtns"><a class="lnk" id="setClose">close</a></div>
+  <div class="rowbtns"><a class="lnk" id="setClose">close.</a></div>
 </div></div>
 
 <div class="ov" id="ovSnap"><div class="card">
@@ -491,10 +486,10 @@ select:focus,input[type=text]:focus{border-color:var(--blue)}
     restore, so restoring is itself undoable.</div>
   <div class="grp"><div class="hd lbl">create.</div>
     <div class="opt"><label>name</label><input type="text" id="snapName" placeholder="before re-rating the 4s"><span></span></div>
-    <div class="rowbtns"><a class="lnk" id="snapGo">save state now</a></div>
+    <div class="rowbtns"><a class="lnk" id="snapGo">save state now.</a></div>
   </div>
   <div class="grp"><div class="hd lbl">restore.</div><div id="snapList"></div></div>
-  <div class="rowbtns"><a class="lnk" id="snapClose">close</a></div>
+  <div class="rowbtns"><a class="lnk" id="snapClose">close.</a></div>
 </div></div>
 
 <div class="ov" id="ovOut"><div class="card">
@@ -507,11 +502,11 @@ select:focus,input[type=text]:focus{border-color:var(--blue)}
       <dt>dashboard.html</dt><dd>ranked page with covers</dd>
       <dt>rym-queue.html</dt><dd>click-through RateYourMusic queue</dd>
     </dl></div>
-  <div class="rowbtns"><a class="lnk" id="expGo">export now</a>
-    <a class="lnk" id="expDash" target="_blank">open dashboard</a>
-    <a class="lnk" id="expRym" target="_blank">open RYM queue</a>
+  <div class="rowbtns"><a class="lnk" id="expGo">export now.</a>
+    <a class="lnk" id="expDash" target="_blank">open dashboard.</a>
+    <a class="lnk" id="expRym" target="_blank">open RYM queue.</a>
     <span class="lbl" id="expMsg"></span></div>
-  <div class="rowbtns" style="margin-top:20px"><a class="lnk" id="outClose">close</a></div>
+  <div class="rowbtns" style="margin-top:20px"><a class="lnk" id="outClose">close.</a></div>
 </div></div>
 
 <div class="ov" id="ovKeys"><div class="card">
@@ -534,7 +529,7 @@ select:focus,input[type=text]:focus{border-color:var(--blue)}
     <kbd>/</kbd><span>search</span><kbd>,</kbd><span>settings</span>
     <kbd>G</kbd><span>save states</span><kbd>E</kbd><span>export</span>
     <kbd>A</kbd><span>about</span><kbd>?</kbd><span>this list</span><kbd>Esc</kbd><span>close</span></div></div>
-  <div class="rowbtns"><a class="lnk" id="keysClose">close</a></div>
+  <div class="rowbtns"><a class="lnk" id="keysClose">close.</a></div>
 </div></div>
 
 <div class="ov" id="ovAbout"><div class="card">
@@ -559,10 +554,9 @@ select:focus,input[type=text]:focus{border-color:var(--blue)}
       <a href="https://github.com/kenny-t-vo" target="_blank" rel="noopener">github.com/kenny-t-vo</a>
     </div>
   </div>
-  <div class="rowbtns"><a class="lnk" id="aboutClose">close</a></div>
+  <div class="rowbtns"><a class="lnk" id="aboutClose">close.</a></div>
 </div></div>
 
-<div id="toast"></div>
 
 <script>
 "use strict";
@@ -590,8 +584,16 @@ const listen=q=>{const sv=SERVICES[CFG.listenOn]; return sv?sv.url(q):null;};
 const ntrk=s=>s.toLowerCase().normalize("NFKD").replace(/[^\w\s]/g," ").replace(/\s+/g," ").trim();
 const stars=v=>v?"★".repeat(Math.floor(v))+((v%1)?"½":""):"";
 const fdate=t=>t?new Date(t*1000).toLocaleDateString(undefined,{year:"numeric",month:"short"}):"";
-function toast(m,ms){clearTimeout(toast._t);const t=$("#toast");t.textContent=m;t.classList.add("on");
-  toast._t=setTimeout(()=>t.classList.remove("on"),ms||1500);}
+// a passive confirmation: the status line carries it, then the count comes back
+function toast(m,ms){clearTimeout(toast._t);const s=$("#stat");
+  if(s.classList.contains("hold"))return;
+  s.textContent=m;s.classList.add("say");
+  toast._t=setTimeout(()=>{s.classList.remove("say");paintChrome();},ms||1500);}
+// an ongoing state that only a reload clears
+function hold(m){const s=$("#stat");clearTimeout(toast._t);s.classList.remove("say");
+  s.classList.add("hold");s.textContent=m+" ";
+  const a=document.createElement("a");a.href="#";a.textContent="reload.";
+  a.onclick=e=>{e.preventDefault();location.reload();};s.append(a);}
 
 /* ── write queue: never lose a rating to a dropped request ───────── */
 const Q={pend:[],busy:false,fail:0};
@@ -619,8 +621,8 @@ function paintSave(){
   const down = Q.fail >= 2;
   el.classList.toggle("pend", Q.pend.length>0 && !down);
   el.classList.toggle("err", down);
-  t.textContent = down ? ("offline · "+Q.pend.length+" queued")
-                : Q.pend.length ? (Q.pend.length+" saving") : "saved";
+  t.textContent = down ? ("offline · "+Q.pend.length+" queued.")
+                : Q.pend.length ? (Q.pend.length+" saving.") : "saved.";
 }
 addEventListener("beforeunload",e=>{if(Q.pend.length){e.preventDefault();e.returnValue="";}});
 
@@ -638,9 +640,7 @@ async function boot(){
 }
 async function pollRev(){
   try{const j=await fetch("/api/ping").then(r=>r.json());
-    if(j.rev>rev+Q.pend.length){ $("#bannerT").textContent=
-      "Ratings changed in another tab or process. Reload to see them.";
-      $("#banner").classList.add("on"); }
+    if(j.rev>rev+Q.pend.length) hold("ratings changed in another tab or process.");
   }catch(e){}
 }
 
@@ -663,7 +663,7 @@ function apply(resume){
     discovered:()=>VIEW.sort((x,y)=>x.first-y.first),
     artist:()=>VIEW.sort((x,y)=>x.artist.toLowerCase().localeCompare(y.artist.toLowerCase())||y.plays-x.plays),
     random:()=>VIEW.sort((x,y)=>hash(x.id)-hash(y.id))}[CFG.sort]||(()=>{}))();
-  $("#sCount").textContent=VIEW.length+" albums match";
+  $("#sCount").textContent=VIEW.length+" albums match.";
   if(resume){const k=VIEW.findIndex(a=>!(R[a.id]||{}).rating); i=k<0?0:k;}
   else if(cur){const k=VIEW.findIndex(a=>a.id===cur); if(k>=0)i=k;}
   i=Math.max(0,Math.min(i,VIEW.length-1));
@@ -679,7 +679,7 @@ function buildScale(){
 }
 function render(){
   const empty=!VIEW.length;
-  $("#title").textContent = empty?"nothing matches":VIEW[i].album;
+  $("#title").textContent = empty?"nothing matches.":VIEW[i].album;
   if(empty){
     $("#artist").textContent=""; $("#artist").removeAttribute("href"); $("#tags").innerHTML=""; $("#tracks").innerHTML="";
     $("#rym").innerHTML="";
@@ -690,7 +690,7 @@ function render(){
   const a=VIEW[i], r=R[a.id]||{};
 
   $("#pos").textContent=`${i+1} of ${VIEW.length}`;
-  $("#posAlt").textContent=`#${a.rank} by plays in library`;
+  $("#posAlt").textContent=`#${a.rank} by plays in library.`;
   const ar=$("#artist"); ar.textContent=a.artist; ar.href=artistSearch(a.artist);
 
   const cov=$("#cover"), img=$("#coverImg");
@@ -786,7 +786,9 @@ function paintChrome(){
   const inV=VIEW.filter(x=>(R[x.id]||{}).rating).length;
   $("#hcount").textContent=`${nf(done)} / ${nf(VIEW.length)}`;
   $("#prog i").style.width=(100*inV/Math.max(1,VIEW.length))+"%";
-  $("#stat").textContent=`${inV} rated in view · ${VIEW.length-inV} to go`;
+  const st=$("#stat");
+  if(!st.classList.contains("say")&&!st.classList.contains("hold"))
+    st.textContent=`${inV} rated in view · ${VIEW.length-inV} to go.`;
 
   const mins=(Date.now()-sess.start)/60000;
   const rate=sess.n/Math.max(mins,.4);
@@ -875,44 +877,44 @@ function markStrip(id,v){
   const el=$$("#stripInner .th")[n]; if(!el)return;
   el.classList.add("rated"); el.dataset.r=v.toFixed(1);
 }
-function next(silent){ if(i<VIEW.length-1){i++;render();} else {render(); if(!silent)toast("end of queue");} }
+function next(silent){ if(i<VIEW.length-1){i++;render();} else {render(); if(!silent)toast("end of queue.");} }
 function prev(){ if(i>0){i--;render();} }
 function undo(){
-  const h=undoS.pop(); if(!h){toast("nothing to undo");return;}
+  const h=undoS.pop(); if(!h){toast("nothing to undo.");return;}
   redoS.push({id:h.id,prev:snapshot(h.id)});
   if(h.prev){R[h.id]=h.prev; push(Object.assign({id:h.id},h.prev));}
   else {delete R[h.id]; push({id:h.id,clear:true});}
   apply(false);
   const k=VIEW.findIndex(a=>a.id===h.id); if(k>=0)i=k;
-  render(); buildStrip(); toast("undone");
+  render(); buildStrip(); toast("undone.");
 }
 function redo(){
-  const h=redoS.pop(); if(!h){toast("nothing to redo");return;}
+  const h=redoS.pop(); if(!h){toast("nothing to redo.");return;}
   undoS.push({id:h.id,prev:snapshot(h.id)});
   if(h.prev){R[h.id]=h.prev; push(Object.assign({id:h.id},h.prev));}
   else {delete R[h.id]; push({id:h.id,clear:true});}
   apply(false);
   const k=VIEW.findIndex(a=>a.id===h.id); if(k>=0)i=k;
-  render(); buildStrip(); toast("redone");
+  render(); buildStrip(); toast("redone.");
 }
 function toggleFlag(){ if(!VIEW.length)return; const a=VIEW[i], r=R[a.id]||{};
   commit(a.id,snapshot(a.id),Object.assign({},r,{flag:!r.flag}));
-  render(); toast(r.flag?"unflagged":"flagged to revisit"); }
+  render(); toast(r.flag?"unflagged.":"flagged to revisit."); }
 function skip(){ if(!VIEW.length)return; const a=VIEW[i];
   commit(a.id,snapshot(a.id),Object.assign({},R[a.id],{skip:true}),true); next(); }
 function exclude(){
   if(!VIEW.length)return; const a=VIEW[i];
   if(CFG.confirmExclude&&!confirm(`Hide “${a.album}” from the queue?`))return;
   commit(a.id,snapshot(a.id),Object.assign({},R[a.id],{excluded:true}),true);
-  apply(false); buildStrip(); toast("hidden · U to undo");
+  apply(false); buildStrip(); toast("hidden · U to undo.");
 }
 function clearRating(){ if(!VIEW.length)return; const a=VIEW[i];
-  commit(a.id,snapshot(a.id),null); render(); buildStrip(); toast("cleared"); }
+  commit(a.id,snapshot(a.id),null); render(); buildStrip(); toast("cleared."); }
 function jumpUnrated(){const k=VIEW.findIndex((a,n)=>n>i&&!(R[a.id]||{}).rating);
   const j=k<0?VIEW.findIndex(a=>!(R[a.id]||{}).rating):k;
-  if(j<0){toast("everything here is rated");return;} i=j; render();}
+  if(j<0){toast("everything here is rated.");return;} i=j; render();}
 function randomUnrated(){const c=VIEW.map((a,n)=>[a,n]).filter(([a])=>!(R[a.id]||{}).rating);
-  if(!c.length){toast("everything here is rated");return;}
+  if(!c.length){toast("everything here is rated.");return;}
   i=c[Math.floor(Math.random()*c.length)][1]; render();}
 function openRym(){ if(!VIEW.length)return; const a=VIEW[i];
   window.open(a.rym||a.rym_search,"_blank","noopener"); }
@@ -921,7 +923,7 @@ function openArtist(){ if(!VIEW.length)return;
 function copyName(){ if(!VIEW.length)return; const a=VIEW[i];
   const s=`${a.artist} - ${a.album}`;
   (navigator.clipboard?navigator.clipboard.writeText(s):Promise.reject())
-    .then(()=>toast("copied · "+s)).catch(()=>toast("copy blocked by the browser")); }
+    .then(()=>toast("copied · "+s)).catch(()=>toast("copy blocked by the browser.")); }
 
 /* ── notes ───────────────────────────────────────────────────────── */
 function countNote(){
@@ -967,7 +969,7 @@ async function loadSnaps(){
       headers:{"Content-Type":"application/json"},body:JSON.stringify({file:el.dataset.rs})})
       .then(r=>r.json());
     if(j.ok){R=j.ratings;rev=j.rev;undoS=[];redoS=[];apply(false);buildStrip();
-      closeAll();toast("restored");} else toast("restore failed");
+      closeAll();toast("restored.");} else toast("restore failed.");
   });
 }
 
@@ -998,7 +1000,7 @@ function goto(id){
     if(a){CFG.minPlays=Math.min(CFG.minPlays,a.plays);
       CFG.minTracks=Math.min(CFG.minTracks,a.distinct_tracks);CFG.show="all";
       saveCfg();syncSettings();apply(false);buildStrip();
-      k=VIEW.findIndex(x=>x.id===id);toast("filters relaxed to reach it");}}
+      k=VIEW.findIndex(x=>x.id===id);toast("filters relaxed to reach it.");}}
   if(k>=0){i=k;closeAll();render();}
 }
 
@@ -1036,10 +1038,10 @@ function bind(){
     const name=$("#snapName").value.trim()||"manual save";
     await fetch("/api/snapshots",{method:"POST",headers:{"Content-Type":"application/json"},
       body:JSON.stringify({name})});
-    $("#snapName").value=""; loadSnaps(); toast("save state written");
+    $("#snapName").value=""; loadSnaps(); toast("save state written.");
   };
   $("#expGo").onclick=async()=>{
-    $("#expMsg").textContent="writing";
+    $("#expMsg").textContent="writing…";
     const j=await fetch("/api/export").then(r=>r.json()).catch(()=>null);
     $("#expMsg").textContent=j&&j.ok?`${j.rows} ratings written to out/`:"export failed";
   };
@@ -1060,13 +1062,12 @@ function bind(){
   $("#impSrc").onchange=impNote; impNote();
   $("#impGo").onclick=async()=>{
     const p=$("#impPath").value.trim();
-    if(!p){toast("paste the path to your export");return;}
-    $("#impMsg").textContent="rebuilding";
+    if(!p){toast("paste the path to your export.");return;}
+    $("#impMsg").textContent="rebuilding…";
     const j=await fetch("/api/import",{method:"POST",headers:{"Content-Type":"application/json"},
       body:JSON.stringify({path:p,source:$("#impSrc").value})}).then(r=>r.json()).catch(()=>null);
-    $("#impMsg").textContent=j&&j.ok?"rebuilding, reload in a moment":(j&&j.err)||"failed";
+    $("#impMsg").textContent=j&&j.ok?"rebuilding, reload in a moment.":(j&&j.err)||"failed.";
   };
-  $("#bannerR").onclick=e=>{e.preventDefault();location.reload();};
 
   document.addEventListener("keydown",e=>{
     if(e.key==="Escape"){ if(anyOv()){closeAll();return;} }
@@ -1093,7 +1094,7 @@ function bind(){
       case "y":copyName();break;
       case "w":openArtist();break;
       case "l":{if(!VIEW.length)break;const u=listen(`${VIEW[i].artist} ${VIEW[i].album}`);
-        if(u)window.open(u,"_blank","noopener"); else toast("listen links are off");break;}
+        if(u)window.open(u,"_blank","noopener"); else toast("listen links are off.");break;}
       case "enter":openRym();break;
       case "n":e.preventDefault();$("#noteBox").focus();break;
       case "/":e.preventDefault();openOv("ovFind");break;

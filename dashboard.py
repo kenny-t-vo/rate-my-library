@@ -26,7 +26,8 @@ CSS = """
   --display:"Times New Roman",Times,serif;
   --t1:22px;--t2:16px;--t3:14px;--t4:12.5px;--t5:11px;--t6:10.5px;
   --s1:6px;--s2:12px;--s3:22px;--s4:40px;--s5:72px;
-  --track:-.01em;--track-lbl:.09em;--hair:1px}
+  --s0:3px;--track:-.01em;--track-label:.09em;--hair:.5px}
+@media (max-resolution:1.5dppx){:root{--hair:1px}}
 body{background:var(--bg);color:var(--fg);font:var(--t3)/1.5 var(--body);
   letter-spacing:var(--track);padding:var(--s5) var(--s4) calc(var(--s5) * 1.6);
   -webkit-font-smoothing:antialiased}
@@ -34,9 +35,9 @@ body{background:var(--bg);color:var(--fg);font:var(--t3)/1.5 var(--body);
 .mono{font-variant-numeric:tabular-nums}
 .rule{border:0;border-top:var(--hair) solid var(--fg);margin:0}
 .rule.thin{border-top-color:var(--rule)}
-.lbl{font:var(--t6)/1 var(--body);letter-spacing:var(--track-lbl);color:var(--faint)}
+.lbl{font:var(--t6)/1 var(--body);letter-spacing:var(--track-label);color:var(--faint)}
 header{display:flex;justify-content:space-between;align-items:baseline;padding-bottom:var(--s1)}
-h1{font:var(--t1)/1.1 var(--display);font-weight:400;letter-spacing:-.018em;
+h1{font:var(--t1)/1.1 var(--display);font-weight:400;letter-spacing:-.012em;
   margin:var(--s3) 0 var(--s1)}
 .sub{color:var(--dim);font-size:var(--t3);margin-bottom:var(--s4)}
 .stats{display:flex;gap:var(--s5);padding:var(--s3) 0;margin-bottom:var(--s1)}
@@ -61,7 +62,7 @@ td{padding:var(--s2) var(--s2) var(--s2) 0;border-bottom:var(--hair) solid var(-
 .by{color:var(--dim);font-size:var(--t4)}
 .row .by{margin-left:2px}
 .note{color:var(--dim);font-size:var(--t4);font-style:italic;
-  margin-top:calc(var(--s1) / 2);max-width:46ch}
+  margin-top:var(--s0);max-width:46ch}
 .st{white-space:nowrap;font-size:var(--t2);width:96px}
 .num{font:var(--t4)/1 var(--body);font-variant-numeric:tabular-nums;color:var(--dim);
   text-align:right;white-space:nowrap;width:70px}
@@ -173,7 +174,7 @@ def write_rym_queue():
 .row.done{opacity:.4}
 .row.done .ck{color:var(--blue)}
 .ck{cursor:pointer;font-size:var(--t4);color:var(--dim);user-select:none}
-.kind{font-size:var(--t6);color:var(--dim);text-align:right;letter-spacing:var(--track-lbl)}
+.kind{font-size:var(--t6);color:var(--dim);text-align:right;letter-spacing:var(--track-label)}
 .bar{position:sticky;top:0;background:var(--bg);padding:var(--s2) 0;display:flex;
  gap:var(--s3);align-items:baseline;border-bottom:var(--hair) solid var(--fg);
  z-index:2;flex-wrap:wrap}

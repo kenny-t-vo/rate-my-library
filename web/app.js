@@ -30,8 +30,16 @@ const listen=q=>{const sv=SERVICES[CFG.listenOn]; return sv?sv.url(q):null;};
 const ntrk=s=>s.toLowerCase().normalize("NFKD").replace(/[^\w\s]/g," ").replace(/\s+/g," ").trim();
 const stars=v=>v?"★".repeat(Math.floor(v))+((v%1)?"½":""):"☆☆☆☆☆";
 const fdate=t=>t?new Date(t*1000).toLocaleDateString(undefined,{year:"numeric",month:"short"}):"";
-function toast(m,ms){clearTimeout(toast._t);const t=$("#toast");t.textContent=m;t.classList.add("on");
-  toast._t=setTimeout(()=>t.classList.remove("on"),ms||1500);}
+// a passive confirmation: the status line carries it, then the count comes back
+function toast(m,ms){clearTimeout(toast._t);const s=$("#stat");
+  if(s.classList.contains("hold"))return;
+  s.textContent=m;s.classList.add("say");
+  toast._t=setTimeout(()=>{s.classList.remove("say");paintChrome();},ms||1500);}
+// an ongoing state that only a reload clears
+function hold(m){const s=$("#stat");clearTimeout(toast._t);s.classList.remove("say");
+  s.classList.add("hold");s.textContent=m+" ";
+  const a=document.createElement("a");a.href="#";a.textContent="reload.";
+  a.onclick=e=>{e.preventDefault();location.reload();};s.append(a);}
 
 /* ── saving ─────────────────────────────────────────────────────── */
 // Nothing to retry and nothing to lose: a rating is in IndexedDB before the
@@ -48,17 +56,14 @@ function push(op){
 function paintSave(){
   const el=$("#save"), t=$("#saveT");
   el.classList.remove("pend","err");
-  t.textContent="saved";
+  t.textContent="saved.";
   clearTimeout(saveTimer);
-  el.classList.add("pend"); t.textContent="saving";
-  saveTimer=setTimeout(()=>{el.classList.remove("pend");t.textContent="saved";},260);
+  el.classList.add("pend"); t.textContent="saving.";
+  saveTimer=setTimeout(()=>{el.classList.remove("pend");t.textContent="saved.";},260);
 }
 const chan = "BroadcastChannel" in window ? new BroadcastChannel("rml") : null;
 if(chan) chan.onmessage=e=>{
-  if(e.data&&e.data.t==="rate"){
-    $("#bannerT").textContent="Ratings changed in another tab. Reload to see them.";
-    $("#banner").classList.add("on");
-  }
+  if(e.data&&e.data.t==="rate") hold("ratings changed in another tab.");
 };
 
 /* ── boot ────────────────────────────────────────────────────────── */
@@ -105,7 +110,7 @@ function apply(resume){
     discovered:()=>VIEW.sort((x,y)=>x.first-y.first),
     artist:()=>VIEW.sort((x,y)=>x.artist.toLowerCase().localeCompare(y.artist.toLowerCase())||y.plays-x.plays),
     random:()=>VIEW.sort((x,y)=>hash(x.id)-hash(y.id))}[CFG.sort]||(()=>{}))();
-  $("#sCount").textContent=VIEW.length+" albums match";
+  $("#sCount").textContent=VIEW.length+" albums match.";
   if(resume){const k=VIEW.findIndex(a=>!(R[a.id]||{}).rating); i=k<0?0:k;}
   else if(cur){const k=VIEW.findIndex(a=>a.id===cur); if(k>=0)i=k;}
   i=Math.max(0,Math.min(i,VIEW.length-1));
@@ -121,7 +126,7 @@ function buildScale(){
 }
 function render(){
   const empty=!VIEW.length;
-  $("#title").textContent = empty?"nothing matches":VIEW[i].album;
+  $("#title").textContent = empty?"nothing matches.":VIEW[i].album;
   if(empty){
     $("#artist").textContent=""; $("#artist").removeAttribute("href"); $("#tags").innerHTML=""; $("#tracks").innerHTML="";
     $("#rym").innerHTML="";
@@ -132,7 +137,7 @@ function render(){
   const a=VIEW[i], r=R[a.id]||{};
 
   $("#pos").textContent=`${i+1} of ${VIEW.length}`;
-  $("#posAlt").textContent=`#${a.rank} by plays in library`;
+  $("#posAlt").textContent=`#${a.rank} by plays in library.`;
   const ar=$("#artist"); ar.textContent=a.artist; ar.href=artistSearch(a.artist);
 
   const cov=$("#cover"), img=$("#coverImg");
@@ -225,7 +230,9 @@ function paintChrome(){
   const inV=VIEW.filter(x=>(R[x.id]||{}).rating).length;
   $("#hcount").textContent=`${nf(done)} / ${nf(VIEW.length)}`;
   $("#prog i").style.width=(100*inV/Math.max(1,VIEW.length))+"%";
-  $("#stat").textContent=`${inV} rated in view · ${VIEW.length-inV} to go`;
+  const st=$("#stat");
+  if(!st.classList.contains("say")&&!st.classList.contains("hold"))
+    st.textContent=`${inV} rated in view · ${VIEW.length-inV} to go.`;
 
   const mins=(Date.now()-sess.start)/60000;
   const rate=sess.n/Math.max(mins,.4);
@@ -316,44 +323,44 @@ function markStrip(id,v){
   const el=$$("#stripInner .th")[n]; if(!el)return;
   el.classList.add("rated"); el.dataset.r=v.toFixed(1);
 }
-function next(silent){ if(i<VIEW.length-1){i++;render();} else {render(); if(!silent)toast("end of queue");} }
+function next(silent){ if(i<VIEW.length-1){i++;render();} else {render(); if(!silent)toast("end of queue.");} }
 function prev(){ if(i>0){i--;render();} }
 function undo(){
-  const h=undoS.pop(); if(!h){toast("nothing to undo");return;}
+  const h=undoS.pop(); if(!h){toast("nothing to undo.");return;}
   redoS.push({id:h.id,prev:snapshot(h.id)});
   if(h.prev){R[h.id]=h.prev; push(Object.assign({id:h.id},h.prev));}
   else {delete R[h.id]; push({id:h.id,clear:true});}
   apply(false);
   const k=VIEW.findIndex(a=>a.id===h.id); if(k>=0)i=k;
-  render(); buildStrip(); toast("undone");
+  render(); buildStrip(); toast("undone.");
 }
 function redo(){
-  const h=redoS.pop(); if(!h){toast("nothing to redo");return;}
+  const h=redoS.pop(); if(!h){toast("nothing to redo.");return;}
   undoS.push({id:h.id,prev:snapshot(h.id)});
   if(h.prev){R[h.id]=h.prev; push(Object.assign({id:h.id},h.prev));}
   else {delete R[h.id]; push({id:h.id,clear:true});}
   apply(false);
   const k=VIEW.findIndex(a=>a.id===h.id); if(k>=0)i=k;
-  render(); buildStrip(); toast("redone");
+  render(); buildStrip(); toast("redone.");
 }
 function toggleFlag(){ if(!VIEW.length)return; const a=VIEW[i], r=R[a.id]||{};
   commit(a.id,snapshot(a.id),Object.assign({},r,{flag:!r.flag}));
-  render(); toast(r.flag?"unflagged":"flagged to revisit"); }
+  render(); toast(r.flag?"unflagged.":"flagged to revisit."); }
 function skip(){ if(!VIEW.length)return; const a=VIEW[i];
   commit(a.id,snapshot(a.id),Object.assign({},R[a.id],{skip:true}),true); next(); }
 function exclude(){
   if(!VIEW.length)return; const a=VIEW[i];
   if(CFG.confirmExclude&&!confirm(`Hide “${a.album}” from the queue?`))return;
   commit(a.id,snapshot(a.id),Object.assign({},R[a.id],{excluded:true}),true);
-  apply(false); buildStrip(); toast("hidden · U to undo");
+  apply(false); buildStrip(); toast("hidden · U to undo.");
 }
 function clearRating(){ if(!VIEW.length)return; const a=VIEW[i];
-  commit(a.id,snapshot(a.id),null); render(); buildStrip(); toast("cleared"); }
+  commit(a.id,snapshot(a.id),null); render(); buildStrip(); toast("cleared."); }
 function jumpUnrated(){const k=VIEW.findIndex((a,n)=>n>i&&!(R[a.id]||{}).rating);
   const j=k<0?VIEW.findIndex(a=>!(R[a.id]||{}).rating):k;
-  if(j<0){toast("everything here is rated");return;} i=j; render();}
+  if(j<0){toast("everything here is rated.");return;} i=j; render();}
 function randomUnrated(){const c=VIEW.map((a,n)=>[a,n]).filter(([a])=>!(R[a.id]||{}).rating);
-  if(!c.length){toast("everything here is rated");return;}
+  if(!c.length){toast("everything here is rated.");return;}
   i=c[Math.floor(Math.random()*c.length)][1]; render();}
 function openRym(){ if(!VIEW.length)return; const a=VIEW[i];
   window.open(a.rym||a.rym_search,"_blank","noopener"); }
@@ -362,7 +369,7 @@ function openArtist(){ if(!VIEW.length)return;
 function copyName(){ if(!VIEW.length)return; const a=VIEW[i];
   const s=`${a.artist} - ${a.album}`;
   (navigator.clipboard?navigator.clipboard.writeText(s):Promise.reject())
-    .then(()=>toast("copied · "+s)).catch(()=>toast("copy blocked by the browser")); }
+    .then(()=>toast("copied · "+s)).catch(()=>toast("copy blocked by the browser.")); }
 
 /* ── notes ───────────────────────────────────────────────────────── */
 function countNote(){
@@ -403,7 +410,7 @@ async function loadSnaps(){
   $$("#snapList a[data-rs]").forEach(el=>el.onclick=async()=>{
     if(!confirm("Restore this save state? Your current ratings are snapshotted first."))return;
     const rec=await DB.restoreSnapshot(+el.dataset.rs);
-    if(rec){R=rec;undoS=[];redoS=[];apply(false);buildStrip();closeAll();toast("restored");}
+    if(rec){R=rec;undoS=[];redoS=[];apply(false);buildStrip();closeAll();toast("restored.");}
   });
 }
 
@@ -434,7 +441,7 @@ function goto(id){
     if(a){CFG.minPlays=Math.min(CFG.minPlays,a.plays);
       CFG.minTracks=Math.min(CFG.minTracks,a.distinct_tracks);CFG.show="all";
       saveCfg();syncSettings();apply(false);buildStrip();
-      k=VIEW.findIndex(x=>x.id===id);toast("filters relaxed to reach it");}}
+      k=VIEW.findIndex(x=>x.id===id);toast("filters relaxed to reach it.");}}
   if(k>=0){i=k;closeAll();render();}
 }
 
@@ -472,16 +479,15 @@ function bind(){
   $("#snapGo").onclick=async()=>{
     const name=$("#snapName").value.trim()||"manual save";
     await DB.snapshot(name);
-    $("#snapName").value=""; loadSnaps(); toast("save state written");
+    $("#snapName").value=""; loadSnaps(); toast("save state written.");
   };
   $("#expGo").onclick=()=>{const n=downloadAll();
-    $("#expMsg").textContent=n?`${n} ratings downloaded`:"nothing rated yet";};
+    $("#expMsg").textContent=n?`${n} ratings downloaded.`:"nothing rated yet.";};
   $("#expDash").onclick=e=>{e.preventDefault();openDoc(dashboardHTML());};
   $("#expRym").onclick=e=>{e.preventDefault();openDoc(rymQueueHTML());};
   $("#impGo").onclick=()=>$("#impFile").click();
   $("#impFile").onchange=e=>importFiles(e.target.files);
   $("#impRatings").onchange=e=>importRatings(e.target.files[0]);
-  $("#bannerR").onclick=e=>{e.preventDefault();location.reload();};
   $("#menu").onclick=()=>toggleDrawer();
   $("#ratGo").onclick=()=>$("#impRatings").click();
   $("#wipeGo").onclick=async()=>{
@@ -518,7 +524,7 @@ function bind(){
       case "y":copyName();break;
       case "w":openArtist();break;
       case "l":{if(!VIEW.length)break;const u=listen(`${VIEW[i].artist} ${VIEW[i].album}`);
-        if(u)window.open(u,"_blank","noopener"); else toast("listen links are off");break;}
+        if(u)window.open(u,"_blank","noopener"); else toast("listen links are off.");break;}
       case "enter":openRym();break;
       case "n":e.preventDefault();$("#noteBox").focus();break;
       case "/":e.preventDefault();openOv("ovFind");break;
@@ -578,7 +584,7 @@ async function importFiles(files,first){
     await DB.setKV("meta",{source,importedAt:Date.now(),plays:plays.length,albums:albums.length});
     ALL=albums; R=await DB.allRatings();
     startApp();
-    toast(`${albums.length.toLocaleString()} albums from ${plays.length.toLocaleString()} plays`,2600);
+    toast(`${albums.length.toLocaleString()} albums from ${plays.length.toLocaleString()} plays.`,2600);
   }catch(e){ fail(String(e.message||e)); }
 }
 
@@ -600,7 +606,7 @@ async function importRatings(file,first){
     const matched=rows.filter(([k])=>known.has(k)).length;
     say(`${rows.length} loaded, ${matched} matched to albums here`);
     if(ALL.length){apply(false);buildStrip();}
-    toast(`${matched} ratings restored`,2400);
+    toast(`${matched} ratings restored.`,2400);
   }catch(e){ say("could not read that file"); }
 }
 
@@ -613,7 +619,7 @@ const dl=(name,text,type)=>{const b=new Blob([text],{type:type||"text/plain;char
   const u=URL.createObjectURL(b),a=document.createElement("a");
   a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),1000);};
 const openDoc=html=>{const w=window.open("","_blank");
-  if(!w)return toast("allow popups to open that");w.document.write(html);w.document.close();};
+  if(!w)return toast("allow popups to open that.");w.document.write(html);w.document.close();};
 
 function downloadAll(){
   const rows=ratedRows(); if(!rows.length)return 0;
@@ -653,14 +659,15 @@ const DOC_CSS=`*{box-sizing:border-box;margin:0;padding:0}
 --body:"Plantin","Plantin MT Pro","Plantin fallback","Times New Roman",Times,"Liberation Serif","Hiragino Mincho ProN","Yu Mincho",serif;
 --display:"Times New Roman",Times,serif;
 --t1:22px;--t2:16px;--t3:14px;--t4:12.5px;--t5:11px;--t6:10.5px;
---s1:6px;--s2:12px;--s3:22px;--s4:40px;--s5:72px;--track:-.01em;--hair:1px}
+--s0:3px;--s1:6px;--s2:12px;--s3:22px;--s4:40px;--s5:72px;--track:-.01em;--track-label:.09em;--hair:.5px}
+@media (max-resolution:1.5dppx){:root{--hair:1px}}
 body{background:var(--bg);color:var(--fg);font:var(--t3)/1.5 var(--body);
 letter-spacing:var(--track);padding:var(--s5) var(--s4) calc(var(--s5) * 1.6)}
 .wrap{max-width:940px;margin:0 auto}
-.lbl{font:var(--t6)/1 var(--body);letter-spacing:.09em;color:var(--faint)}
+.lbl{font:var(--t6)/1 var(--body);letter-spacing:var(--track-label);color:var(--faint)}
 hr{border:0;border-top:var(--hair) solid var(--fg);margin:0}
 hr.thin{border-top-color:var(--rule)}
-h1{font:var(--t1)/1.1 var(--display);font-weight:400;letter-spacing:-.018em;
+h1{font:var(--t1)/1.1 var(--display);font-weight:400;letter-spacing:-.012em;
 margin:var(--s3) 0 var(--s1)}
 .sub{color:var(--dim);margin-bottom:var(--s4)}
 .stats{display:flex;gap:var(--s5);padding:var(--s3) 0}
@@ -678,7 +685,7 @@ color:var(--faint);text-align:right;padding-right:var(--s2)}
 img{width:46px;height:46px;object-fit:cover;display:block;background:var(--wash)}
 .al{font-size:var(--t3)}
 .by{color:var(--dim);font-size:var(--t4)}
-.note{color:var(--dim);font-size:var(--t4);font-style:italic;margin-top:calc(var(--s1) / 2);max-width:46ch}
+.note{color:var(--dim);font-size:var(--t4);font-style:italic;margin-top:var(--s0);max-width:46ch}
 .num{font:var(--t4)/1 var(--body);font-variant-numeric:tabular-nums;color:var(--dim);
 text-align:right;white-space:nowrap}
 a{color:var(--blue);text-decoration:underline;text-underline-offset:2px}
@@ -719,9 +726,9 @@ function rymQueueHTML(){
      <span style="white-space:nowrap">${starStr(rec.rating)} <span class="num">${rec.rating.toFixed(1)}</span></span>
      <span class="num">${a.rym?"direct":"search"}</span></div>`).join("");
   return `<!doctype html><meta charset="utf-8"><title>rate-my-library / rym</title><style>${DOC_CSS}
-.row{display:grid;grid-template-columns:30px 34px 1fr 104px 54px;gap:12px;align-items:baseline;
-padding:7px 6px;border-bottom:1px solid var(--rule)}
-.row:hover{background:#f6f6f6}.row.cur{background:#eef;outline:1px solid var(--blue)}
+.row{display:grid;grid-template-columns:30px 34px 1fr 104px 54px;gap:var(--s2);align-items:baseline;
+padding:var(--s1) var(--s1);border-bottom:var(--hair) solid var(--rule)}
+.row:hover{background:var(--wash)}.row.cur{outline:var(--hair) solid var(--blue)}
 .row.done{opacity:.4}.ck{cursor:pointer;font:12px ui-monospace,Menlo,monospace;color:var(--dim)}
 .row.done .ck{color:var(--blue)}button{font:inherit;background:none;border:0;color:var(--blue);
 cursor:pointer;text-decoration:underline;padding:0}</style>

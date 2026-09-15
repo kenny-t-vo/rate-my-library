@@ -8,7 +8,6 @@
 :root{
   /* ── the knobs ──────────────────────────────────────────────────── */
   --pad:clamp(var(--s3),3.4vw,var(--s4));  /* viewport to chrome */
-  --hair:1px;
   --fade:150ms;        /* the only transition duration in the chrome */
   --snap:90ms;         /* pointer feedback on the scale; keys never wait on it */
 
@@ -22,11 +21,6 @@
   --bar:7px;           /* year and distribution chart bars */
   --dot:5px;
   --prog:132px;
-
-  /* tracking. --track in type.css is the body default; these are the two
-     places that need their own. */
-  --track-lbl:.09em;   /* labels. a serif needs less than a mono at one size */
-  --track-tight:-.018em;  /* the display face at t1 and t2 */
 
   /* Redaction 35 at line-height 1.06: the distance from box top to cap top,
      so a title seats on the cover's top edge. Measured with canvas metrics,
@@ -56,7 +50,7 @@
   --trk-bar-x:27px;      /* bar starts under the title, clear of the number */
   --ri-img:34px;
   --out-w:34px;
-  --toast-up:98px;
+  --ctl:15px; --thumb-w:7px; --thumb-h:11px;   /* slider box and thumb */
   --yr-y:34px; --yr-n:42px;   /* plays by year: year, count */
   --dst-s:26px; --dst-n:20px; /* distribution: score, count */
 }
@@ -70,7 +64,7 @@ a:hover{text-decoration-thickness:var(--ul)}
 button{font:inherit;background:none;border:0;color:inherit;cursor:pointer}
 
 /* blue is live or current, purple is done. every use below follows it. */
-.lbl{font:var(--t6)/1 var(--body);letter-spacing:var(--track-lbl);color:var(--faint)}
+.lbl{font:var(--t6)/1 var(--body);letter-spacing:var(--track-label);color:var(--faint)}
 .lnk{color:var(--blue);text-decoration:underline;text-underline-offset:var(--ul);cursor:pointer}
 .lnk:hover{text-decoration-thickness:var(--ul)}
 .lnk.on{color:var(--purple)}
@@ -81,7 +75,7 @@ button{font:inherit;background:none;border:0;color:inherit;cursor:pointer}
 header{flex:none;display:flex;align-items:baseline;gap:var(--s3);
   padding:calc(var(--s2)*.8) var(--pad) var(--s1);
   border-bottom:var(--hair) solid var(--rule2)}
-header .id{font:var(--t6)/1 var(--body);letter-spacing:var(--track-lbl)}
+header .id{font:var(--t6)/1 var(--body);letter-spacing:var(--track-label)}
 header .sp{flex:1}
 header nav{display:flex;gap:var(--s2);font-size:var(--t4)}
 #prog{position:relative;width:var(--prog);height:var(--prog-h);background:var(--rule);top:calc(-1 * var(--hair))}
@@ -101,7 +95,7 @@ main>*{padding:var(--s3) var(--pad);min-height:0;overflow:hidden}
 /* ══ left column ═════════════════════════════════════════════════════ */
 .navlist{display:flex;flex-direction:column;gap:calc(var(--s1)*.8);font-size:var(--t4)}
 .navlist div{display:flex;gap:var(--s1);align-items:baseline}
-.navlist .t{color:var(--faint);font:var(--t6)/1 var(--body);font-variant-numeric:tabular-nums}
+.navlist .t{color:var(--faint);font:var(--t6)/1 var(--figures);font-variant-numeric:tabular-nums}
 .navlist kbd{margin-left:auto;font:var(--t6)/1 var(--body);color:var(--faint)}
 .sect{display:flex;flex-direction:column;gap:var(--s1)}
 .sect .hd{padding-bottom:calc(var(--s1)*.8);border-bottom:var(--hair) solid var(--rule)}
@@ -109,7 +103,7 @@ main>*{padding:var(--s3) var(--pad);min-height:0;overflow:hidden}
   font-size:var(--t4);line-height:1.62}
 .kv dt{color:var(--dim)}
 /* values meet the rule's right edge */
-.kv dd{font:var(--t5)/1.62 var(--body);font-variant-numeric:tabular-nums;text-align:right}
+.kv dd{font:var(--t5)/1.62 var(--figures);font-variant-numeric:tabular-nums;text-align:right}
 
 /* ══ centre: the album ═══════════════════════════════════════════════ */
 .head{display:flex;align-items:baseline;gap:var(--s1);margin-bottom:calc(var(--s2)*1.5);flex:none}
@@ -120,19 +114,19 @@ main>*{padding:var(--s3) var(--pad);min-height:0;overflow:hidden}
 .cover img{width:100%;height:100%;object-fit:cover;display:block;opacity:1;
   transition:opacity var(--fade) ease}
 .cover.load img{opacity:0}
-.cover.none::after{content:"no cover";position:absolute;inset:0;display:grid;place-items:center;
-  font:var(--t6)/1 var(--body);letter-spacing:var(--track-lbl);color:var(--faint)}
+.cover.none::after{content:"no cover.";position:absolute;inset:0;display:grid;place-items:center;
+  font:var(--t6)/1 var(--body);letter-spacing:var(--track-label);color:var(--faint)}
 .titles{min-width:0;flex:1;display:flex;flex-direction:column}
 
 /* the one large thing on this screen. --cap lifts the box so the capital,
    not the ascender space above it, meets the cover's top edge. */
 h1:not(.wtitle){font:var(--t1)/1.06 var(--display);font-weight:400;
-  letter-spacing:var(--track-tight);overflow-wrap:anywhere;
+  letter-spacing:var(--track-t1);overflow-wrap:anywhere;
   margin:var(--cap) 0 var(--s1)}
 h2{font-size:var(--t3);font-weight:400;margin-bottom:var(--s2);overflow-wrap:anywhere}
 h2 a{text-underline-offset:calc(var(--ul) * 1.5)}
 .tagrow{display:flex;flex-wrap:wrap;gap:calc(var(--s1)*.8) var(--s1)}
-.tag{font:var(--t6)/1 var(--body);letter-spacing:var(--track-lbl);color:var(--dim);
+.tag{font:var(--t6)/1 var(--body);letter-spacing:var(--track-label);color:var(--dim);
   border:var(--hair) solid var(--rule);padding:calc(var(--s1)*.7) calc(var(--s1)*.9)}
 .tag.hot{border-color:var(--blue);color:var(--blue)}
 .tag.warn{border-color:var(--purple);color:var(--purple)}
@@ -143,14 +137,14 @@ h2 a{text-underline-offset:calc(var(--ul) * 1.5)}
 .calib b{font-weight:400;font-variant-numeric:tabular-nums;color:var(--fg)}
 
 /* ══ rating row ══════════════════════════════════════════════════════ */
-.ctx{margin-top:var(--s3);flex:none;max-width:var(--measure);padding-bottom:calc(var(--s1)/2)}
+.ctx{margin-top:var(--s3);flex:none;max-width:var(--measure);padding-bottom:var(--s0)}
 .ctxHd{display:flex;justify-content:space-between;align-items:baseline;
   padding-bottom:var(--s1);border-bottom:var(--hair) solid var(--rule);margin-bottom:var(--s1)}
 .rate{margin-top:var(--s3);flex:none}
 .rateHd{display:flex;align-items:baseline;gap:var(--s2);padding-bottom:var(--s1);
   border-bottom:var(--hair) solid var(--rule2);margin-bottom:var(--s1)}
 .stars{font-size:var(--t2);letter-spacing:.05em;min-width:var(--stars-w)}
-.scale{display:grid;grid-template-columns:repeat(10,1fr);gap:calc(var(--s1)/2);
+.scale{display:grid;grid-template-columns:repeat(10,1fr);gap:var(--s0);
   max-width:var(--measure)}
 /* a row of cells with the chosen one inverted. no transition on the keyed
    path: rating is a keypress and must not wait on paint. */
@@ -159,7 +153,7 @@ h2 a{text-underline-offset:calc(var(--ul) * 1.5)}
   transition:background var(--snap),border-color var(--snap),color var(--snap)}
 .cell .k{display:block;font:var(--t6)/1 var(--body);color:var(--faint);
   margin-bottom:calc(var(--s1)*.7);letter-spacing:.05em}
-.cell .v{display:block;font:var(--t4)/1 var(--body);font-variant-numeric:tabular-nums}
+.cell .v{display:block;font:var(--t4)/1 var(--figures);font-variant-numeric:tabular-nums}
 .cell:hover{border-color:var(--blue);color:var(--blue)}
 .cell:hover .k{color:var(--blue)}
 .cell.on{background:var(--blue);border-color:var(--blue);color:var(--bg)}
@@ -171,12 +165,12 @@ h2 a{text-underline-offset:calc(var(--ul) * 1.5)}
 #noteBox{width:100%;max-width:var(--measure);min-height:var(--note-h);height:var(--note-h);
   border:0;border-bottom:var(--hair) solid var(--rule);background:none;
   font:var(--t4)/1.5 var(--body);letter-spacing:var(--track);color:var(--fg);
-  resize:none;outline:none;padding:calc(var(--s1)/2) 0 var(--s1);
+  resize:none;outline:none;padding:var(--s0) 0 var(--s1);
   transition:height var(--fade) ease,border-color var(--fade)}
 #noteBox:focus{border-bottom-color:var(--blue);height:var(--note-open)}
 #noteBox.has{border-bottom-color:var(--purple)}
 #noteBox::placeholder{color:var(--faint);font-style:italic}
-#noteCount{margin-left:auto;font:var(--t6)/1 var(--body);font-variant-numeric:tabular-nums;
+#noteCount{margin-left:auto;font:var(--t6)/1 var(--figures);font-variant-numeric:tabular-nums;
   color:var(--faint);opacity:0;transition:opacity var(--fade)}
 #noteBox:focus~#noteCount,.note.editing #noteCount{opacity:1}
 #noteCount.over{color:var(--purple)}
@@ -187,7 +181,7 @@ h2 a{text-underline-offset:calc(var(--ul) * 1.5)}
   padding-bottom:var(--s1);border-bottom:var(--hair) solid var(--rule2);
   margin-bottom:var(--s1);flex:none}
 .years{display:flex;flex-direction:column;gap:var(--ul);
-  font:var(--t5)/1.55 var(--body);font-variant-numeric:tabular-nums;flex:none}
+  font:var(--t5)/1.55 var(--figures);font-variant-numeric:tabular-nums;flex:none}
 .years .r{display:grid;grid-template-columns:var(--yr-y) var(--yr-n) 1fr;gap:var(--s1);align-items:center}
 .years .r span:nth-child(2){text-align:right;color:var(--dim)}
 .years .r i{display:block;height:var(--bar);background:var(--blue);opacity:.82}
@@ -201,10 +195,10 @@ h2 a{text-underline-offset:calc(var(--ul) * 1.5)}
 /* leading numbers meet the rule's left edge, counts meet its right */
 .trk{display:grid;grid-template-columns:var(--trk-n) 1fr auto;gap:var(--s1);align-items:baseline;
   padding:calc(var(--s1)*.6) 0;position:relative;border-bottom:var(--hair) solid var(--wash)}
-.trk .n{font:var(--t6)/1.5 var(--body);font-variant-numeric:tabular-nums;
+.trk .n{font:var(--t6)/1.5 var(--figures);font-variant-numeric:tabular-nums;
   color:var(--faint);text-align:left}
 .trk .t{font-size:var(--t4);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.trk .c{font:var(--t5)/1.5 var(--body);font-variant-numeric:tabular-nums;color:var(--dim)}
+.trk .c{font:var(--t5)/1.5 var(--figures);font-variant-numeric:tabular-nums;color:var(--dim)}
 .trk.top .t{color:var(--blue)}
 .trk.unheard{opacity:.42}
 .trk.unheard .n{color:var(--faint)}
@@ -227,12 +221,12 @@ footer{flex:none;border-top:var(--hair) solid var(--rule2);
 /* micro badge, below the scale on purpose: it sits on a 42px square */
 .th.rated::after{content:attr(data-r);position:absolute;left:0;right:0;bottom:0;
   background:var(--purple);color:var(--bg);text-align:center;
-  font:var(--t-badge)/1.5 var(--body);font-variant-numeric:tabular-nums}
+  font:var(--t-badge)/1.5 var(--figures);font-variant-numeric:tabular-nums}
 .th.cur.rated::after{background:var(--blue)}
 .statusbar{display:flex;align-items:baseline;gap:var(--s2)}
 .statusbar .sp{flex:1}
 #save{display:flex;align-items:center;gap:calc(var(--s1)*.8)}
-#save .dot{width:var(--dot);height:var(--dot);border-radius:50%;background:var(--blue);flex:none}
+#save .dot{width:var(--dot);height:var(--dot);background:var(--blue);flex:none}
 #save.pend .dot{background:var(--purple)}
 /* the palette has no red, so a failure reads as a hollow dot rather than a
    second purple that is indistinguishable from pending */
@@ -246,7 +240,7 @@ footer{flex:none;border-top:var(--hair) solid var(--rule2);
 .card{background:var(--bg);border:var(--hair) solid var(--rule2);width:min(var(--card-w),100%);
   padding:var(--s3) calc(var(--s3)*1.3) calc(var(--s3)*1.3)}
 .card h3{font:var(--t2)/1.2 var(--display);font-weight:400;
-  letter-spacing:var(--track-tight);margin-bottom:calc(var(--s1)/2)}
+  letter-spacing:var(--track-t2);margin-bottom:var(--s0)}
 .card .cs{color:var(--dim);font-size:var(--t4);margin-bottom:calc(var(--s2)*1.5);line-height:1.5}
 .grp{margin-bottom:calc(var(--s3)*1.1)}
 .grp>.hd{padding-bottom:var(--s1);border-bottom:var(--hair) solid var(--rule2);
@@ -254,24 +248,36 @@ footer{flex:none;border-top:var(--hair) solid var(--rule2);
 .opt{display:grid;grid-template-columns:var(--opt-label) 1fr auto;gap:var(--s2);align-items:center;
   padding:var(--s1) 0;font-size:var(--t3)}
 .opt label{color:var(--dim)}
-.opt input[type=range]{width:100%;accent-color:var(--blue)}
-.opt output{font:var(--t5)/1 var(--body);font-variant-numeric:tabular-nums;
+/* hairline track, ink thumb, blue on focus, nothing filled */
+.opt input[type=range]{width:100%;height:var(--ctl);margin:0;
+  -webkit-appearance:none;appearance:none;background:transparent}
+.opt input[type=range]::-webkit-slider-runnable-track{height:var(--hair);background:var(--rule);border:0}
+.opt input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:var(--thumb-w);
+  height:var(--thumb-h);background:var(--fg);border:0;
+  margin-top:calc((var(--hair) - var(--thumb-h)) / 2)}
+.opt input[type=range]::-moz-range-track{height:var(--hair);background:var(--rule);border:0}
+.opt input[type=range]::-moz-range-thumb{width:var(--thumb-w);height:var(--thumb-h);
+  background:var(--fg);border:0;border-radius:0}
+.opt input[type=range]:focus{outline:0}
+.opt input[type=range]:focus::-webkit-slider-thumb{background:var(--blue)}
+.opt output{font:var(--t5)/1 var(--figures);font-variant-numeric:tabular-nums;
   color:var(--fg);min-width:var(--out-w);text-align:right}
+/* a field is a hairline under the text, blue while it has focus */
 select,input[type=text]{font:var(--t3)/1.3 var(--body);letter-spacing:var(--track);
-  color:var(--fg);background:var(--bg);border:var(--hair) solid var(--rule);
-  padding:calc(var(--s1)*.9) var(--s1);width:100%;outline:none}
-select:focus,input[type=text]:focus{border-color:var(--blue)}
-.tog{justify-self:end;font:var(--t6)/1 var(--body);letter-spacing:var(--track-lbl);
+  color:var(--fg);background:var(--bg);border:0;border-bottom:var(--hair) solid var(--rule);
+  padding:var(--s0) 0;width:100%;outline:none}
+select:focus,input[type=text]:focus{border-bottom-color:var(--blue)}
+.tog{justify-self:end;font:var(--t6)/1 var(--body);letter-spacing:var(--track-label);
   border:var(--hair) solid var(--rule);padding:calc(var(--s1)*.8) calc(var(--s1)*1.4);
   cursor:pointer;min-width:var(--stars-w);text-align:center}
 .tog.on{background:var(--blue);border-color:var(--blue);color:var(--bg)}
 .snap{display:grid;grid-template-columns:1fr auto auto auto;gap:var(--s2);align-items:baseline;
   padding:var(--s1) 0;border-bottom:var(--hair) solid var(--rule);font-size:var(--t4)}
-.snap .m{font:var(--t5)/1 var(--body);font-variant-numeric:tabular-nums;color:var(--dim)}
+.snap .m{font:var(--t5)/1 var(--figures);font-variant-numeric:tabular-nums;color:var(--dim)}
 .keys{display:grid;grid-template-columns:auto 1fr;gap:var(--s1) var(--s2);
   font-size:var(--t4);align-items:baseline}
 .keys kbd{font:var(--t6)/1 var(--body);border:var(--hair) solid var(--rule);
-  padding:calc(var(--s1)/2) var(--s1);white-space:nowrap}
+  padding:var(--s0) var(--s1);white-space:nowrap}
 .keys span{color:var(--dim)}
 .rowbtns{display:flex;gap:var(--s2);margin-top:var(--s1);font-size:var(--t4)}
 .res{max-height:52vh;overflow-y:auto;margin-top:var(--s2)}
@@ -281,18 +287,8 @@ select:focus,input[type=text]:focus{border-color:var(--blue)}
 .ri img{width:var(--ri-img);height:var(--ri-img);object-fit:cover;background:var(--wash);display:block}
 .ri .a{font-size:var(--t3)}
 .ri .b{font-size:var(--t4);color:var(--dim)}
-.ri .c{font:var(--t5)/1 var(--body);font-variant-numeric:tabular-nums;
+.ri .c{font:var(--t5)/1 var(--figures);font-variant-numeric:tabular-nums;
   color:var(--dim);text-align:right;white-space:nowrap}
-#toast{position:fixed;left:50%;bottom:var(--toast-up);transform:translate(-50%,var(--s1));z-index:60;
-  background:var(--bg);border:var(--hair) solid var(--rule2);
-  padding:var(--s1) calc(var(--s2)*1.25);font-size:var(--t4);opacity:0;pointer-events:none;
-  transition:opacity var(--fade),transform var(--fade)}
-#toast.on{opacity:1;transform:translate(-50%,0)}
-#banner{position:fixed;left:0;right:0;top:0;z-index:70;background:var(--purple);
-  color:var(--bg);padding:var(--s1) var(--pad);font-size:var(--t4);display:none;
-  align-items:center;gap:var(--s2)}
-#banner.on{display:flex}
-#banner a{color:var(--bg)}
 
 /* short windows: tighten the fixed blocks so the year chart never ends up
    behind the filmstrip. colM still scrolls as a last resort. */
@@ -318,8 +314,8 @@ select:focus,input[type=text]:focus{border-color:var(--blue)}
    were. The filters are navigation rather than content, so they move into a
    drawer instead of stacking above the album. */
 #menu{display:none}
-#scrim{position:fixed;inset:0;z-index:28;background:rgba(255,255,255,.6);
-  opacity:0;pointer-events:none;transition:opacity var(--fade)}
+/* catches the tap that closes the drawer; the page beneath stays undimmed */
+#scrim{position:fixed;inset:0;z-index:28;opacity:0;pointer-events:none}
 #scrim.on{opacity:1;pointer-events:auto}
 
 @media(max-width:820px){
@@ -330,7 +326,7 @@ select:focus,input[type=text]:focus{border-color:var(--blue)}
     padding:var(--s1) var(--pad) calc(var(--s1)*.8)}
   header nav{display:none}
   #prog{width:auto;flex:1}
-  #menu{display:block;font:var(--t6)/1 var(--body);letter-spacing:var(--track-lbl);
+  #menu{display:block;font:var(--t6)/1 var(--body);letter-spacing:var(--track-label);
     color:var(--blue);text-decoration:underline;text-underline-offset:var(--ul);
     background:none;border:0;padding:0;cursor:pointer}
 
@@ -393,7 +389,7 @@ select:focus,input[type=text]:focus{border-color:var(--blue)}
 #welcome.on{display:block}
 .wcard{max-width:var(--wcard-w);margin:0 auto}
 .wtitle{font:var(--t1)/1.1 var(--display);font-weight:400;
-  letter-spacing:var(--track-tight);margin:0 0 var(--s1)}
+  letter-spacing:var(--track-t1);margin:0 0 var(--s1)}
 .wlede{font-size:var(--t3);line-height:1.55;color:var(--dim);margin-bottom:var(--s4)}
 .wgrp{margin-bottom:calc(var(--s3)*1.2)}
 .wgrp>.hd{padding-bottom:var(--s1);border-bottom:var(--hair) solid var(--rule2);
@@ -402,7 +398,7 @@ select:focus,input[type=text]:focus{border-color:var(--blue)}
   padding:var(--s4) var(--s3);border:var(--hair) dashed var(--rule);cursor:pointer;
   transition:border-color var(--fade),background var(--fade)}
 .drop:hover,.drop.over{border-color:var(--blue);background:var(--wash)}
-.dropbig{font:var(--t2)/1.2 var(--display);letter-spacing:var(--track-tight)}
+.dropbig{font:var(--t2)/1.2 var(--display);letter-spacing:var(--track-t2)}
 .wkv{line-height:1.55;align-items:start}
 .wkv dt{color:var(--fg);padding-bottom:var(--s2)}
 .wkv dd{font-family:var(--body);font-size:var(--t4);text-align:right;white-space:nowrap}

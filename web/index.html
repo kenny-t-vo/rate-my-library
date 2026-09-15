@@ -19,8 +19,8 @@
     <div class="wgrp"><div class="hd lbl">start.</div>
       <label class="drop" id="drop">
         <input type="file" id="pick" multiple accept=".csv,.zip,.json" hidden>
-        <span class="dropbig">Drop your export here</span>
-        <span class="lbl">or choose a file</span>
+        <span class="dropbig">drop your export here.</span>
+        <span class="lbl">or choose a file.</span>
       </label>
       <div class="lbl" id="wstatus"></div>
     </div>
@@ -29,19 +29,19 @@
       <dl class="kv wkv">
         <dt><b>Last.fm</b>, the quicker input. It downloads immediately, and covers
           everything you scrobble whatever you played it on.</dt>
-        <dd><a href="https://benjaminbenben.com/lastfm-to-csv/" target="_blank" rel="noopener">export csv</a></dd>
+        <dd><a href="https://benjaminbenben.com/lastfm-to-csv/" target="_blank" rel="noopener">export csv.</a></dd>
         <dt><b>Spotify</b>, the <i>extended streaming history</i> only. Request it under
           Privacy Settings; it is emailed to you and takes days to a few weeks. The short
           Account data download has no album names and will not work.</dt>
-        <dd><a href="https://www.spotify.com/account/privacy/" target="_blank" rel="noopener">request</a></dd>
+        <dd><a href="https://www.spotify.com/account/privacy/" target="_blank" rel="noopener">request.</a></dd>
       </dl>
     </div>
 
     <div class="wgrp"><div class="hd lbl">already have ratings.</div>
       <div class="wrow">
-        <label class="lnk" for="pickr">load a ratings file</label>
+        <label class="lnk" for="pickr">load a ratings file.</label>
         <input type="file" id="pickr" accept=".json" hidden>
-        <span class="lbl">ratings.json from the command line version, or an export from here</span>
+        <span class="lbl">ratings.json from the command line version, or an export from here.</span>
       </div>
     </div>
 
@@ -53,25 +53,24 @@
     </div>
 
     <div class="wfoot lbl">no account &middot; no server &middot;
-      <a href="https://github.com/kenny-t-vo/rate-my-library" target="_blank" rel="noopener">source</a></div>
+      <a href="https://github.com/kenny-t-vo/rate-my-library" target="_blank" rel="noopener">source.</a></div>
   </div>
 </div>
-<div id="banner"><span id="bannerT"></span><a href="#" id="bannerR">reload</a></div>
 <div id="app">
 
 <header>
-  <button id="menu" aria-label="menu">menu</button>
+  <button id="menu" aria-label="menu">menu.</button>
   <span class="id">rate-my-library.</span>
   <div id="prog"><i></i></div>
   <span class="lbl" id="hcount">0 / 0</span>
   <span class="sp"></span>
   <nav>
-    <a class="lnk" data-ov="ovFind">search</a>
-    <a class="lnk" data-ov="ovSet">settings</a>
-    <a class="lnk" data-ov="ovSnap">saves</a>
-    <a class="lnk" data-ov="ovOut">export</a>
-    <a class="lnk" data-ov="ovKeys">keys</a>
-    <a class="lnk" data-ov="ovAbout">about</a>
+    <a class="lnk" data-ov="ovFind">search.</a>
+    <a class="lnk" data-ov="ovSet">settings.</a>
+    <a class="lnk" data-ov="ovSnap">saves.</a>
+    <a class="lnk" data-ov="ovOut">export.</a>
+    <a class="lnk" data-ov="ovKeys">keys.</a>
+    <a class="lnk" data-ov="ovAbout">about.</a>
   </nav>
 </header>
 
@@ -113,7 +112,7 @@
       <div class="rateHd">
         <span class="stars" id="stars"></span>
         <span class="sp" style="flex:1"></span>
-        <span class="lbl">press 1 to 0</span>
+        <span class="lbl">press 1 to 0.</span>
       </div>
       <div class="scale" id="scale"></div>
     </div>
@@ -121,7 +120,7 @@
     <div class="note" id="noteWrap">
       <div class="noteHd">
         <span class="lbl">note.</span>
-        <span class="lbl" style="color:var(--faint)">press n</span>
+        <span class="lbl">press n.</span>
         <span id="noteCount"></span>
       </div>
       <textarea id="noteBox" maxlength="500" rows="1" spellcheck="false"
@@ -153,7 +152,7 @@
     <span class="lbl" id="stat"></span>
     <span class="sp"></span>
     <span class="lbl" id="last"></span>
-    <span id="save" class="lbl"><span class="dot"></span><span id="saveT">saved</span></span>
+    <span id="save" class="lbl"><span class="dot"></span><span id="saveT">saved.</span></span>
   </div>
 </footer>
 </div>
@@ -187,10 +186,10 @@
     <div class="opt"><label></label><span class="lbl" id="sCount"></span><span></span></div>
   </div>
   <div class="grp"><div class="hd lbl">behaviour.</div>
-    <div class="opt"><label>advance after rating</label><span class="lbl">move to the next album automatically</span><span class="tog" id="tAdv">on</span></div>
-    <div class="opt"><label>cover filmstrip</label><span class="lbl">show the queue along the bottom</span><span class="tog" id="tCar">on</span></div>
-    <div class="opt"><label>confirm hiding</label><span class="lbl">ask before “not an album”</span><span class="tog" id="tConf">off</span></div>
-    <div class="opt"><label>whole tracklist</label><span class="lbl">show songs you have never played, in album order</span><span class="tog" id="tFull">on</span></div>
+    <div class="opt"><label>advance after rating</label><span class="lbl">move to the next album automatically.</span><span class="tog" id="tAdv">on</span></div>
+    <div class="opt"><label>cover filmstrip</label><span class="lbl">show the queue along the bottom.</span><span class="tog" id="tCar">on</span></div>
+    <div class="opt"><label>confirm hiding</label><span class="lbl">ask before “not an album”.</span><span class="tog" id="tConf">off</span></div>
+    <div class="opt"><label>whole tracklist</label><span class="lbl">show songs you have never played, in album order.</span><span class="tog" id="tFull">on</span></div>
     <div class="opt"><label>listen links</label><select id="sListen">
       <option value="spotify">Spotify</option>
       <option value="apple">Apple Music</option>
@@ -199,20 +198,20 @@
       <option value="">off</option></select><span></span></div>
   </div>
   <div class="grp"><div class="hd lbl">library.</div>
-    <div class="rowbtns"><a class="lnk" id="impGo">load a new export</a>
+    <div class="rowbtns"><a class="lnk" id="impGo">load a new export.</a>
       <input type="file" id="impFile" multiple accept=".csv,.zip,.json" hidden>
       <span class="lbl" id="impMsg"></span></div>
     <div style="font-size:var(--t4);color:var(--dim);line-height:1.55;margin-top:10px">
       A Last.fm csv, or a Spotify extended streaming history as a zip or its json files.
       Ratings and notes are keyed by artist and album, so a newer export of the same
       library keeps every score. A save state is written before the rebuild.</div>
-    <div class="rowbtns" style="margin-top:16px"><a class="lnk" id="ratGo">load a ratings file</a>
+    <div class="rowbtns" style="margin-top:16px"><a class="lnk" id="ratGo">load a ratings file.</a>
       <input type="file" id="impRatings" accept=".json" hidden>
-      <span class="lbl" id="ratMsg">ratings.json from the command line version, or an export from here</span></div>
-    <div class="rowbtns" style="margin-top:16px"><a class="lnk" id="wipeGo">erase everything</a>
-      <span class="lbl">removes the library and every rating from this browser</span></div>
+      <span class="lbl" id="ratMsg">ratings.json from the command line version, or an export from here.</span></div>
+    <div class="rowbtns" style="margin-top:16px"><a class="lnk" id="wipeGo">erase everything.</a>
+      <span class="lbl">removes the library and every rating from this browser.</span></div>
   </div>
-  <div class="rowbtns"><a class="lnk" id="setClose">close</a></div>
+  <div class="rowbtns"><a class="lnk" id="setClose">close.</a></div>
 </div></div>
 
 <div class="ov" id="ovSnap"><div class="card">
@@ -220,10 +219,10 @@
     are named restore points. One is taken before any restore, so restoring is undoable.</div>
   <div class="grp"><div class="hd lbl">create.</div>
     <div class="opt"><label>name</label><input type="text" id="snapName" placeholder="before re-rating the 4s"><span></span></div>
-    <div class="rowbtns"><a class="lnk" id="snapGo">save state now</a></div>
+    <div class="rowbtns"><a class="lnk" id="snapGo">save state now.</a></div>
   </div>
   <div class="grp"><div class="hd lbl">restore.</div><div id="snapList"></div></div>
-  <div class="rowbtns"><a class="lnk" id="snapClose">close</a></div>
+  <div class="rowbtns"><a class="lnk" id="snapClose">close.</a></div>
 </div></div>
 
 <div class="ov" id="ovOut"><div class="card">
@@ -236,11 +235,11 @@
       <dt>dashboard.html</dt><dd>ranked page with covers</dd>
       <dt>rym-queue.html</dt><dd>click-through RateYourMusic queue</dd>
     </dl></div>
-  <div class="rowbtns"><a class="lnk" id="expGo">export now</a>
-    <a class="lnk" id="expDash" target="_blank">open dashboard</a>
-    <a class="lnk" id="expRym" target="_blank">open RYM queue</a>
+  <div class="rowbtns"><a class="lnk" id="expGo">export now.</a>
+    <a class="lnk" id="expDash" target="_blank">open dashboard.</a>
+    <a class="lnk" id="expRym" target="_blank">open RYM queue.</a>
     <span class="lbl" id="expMsg"></span></div>
-  <div class="rowbtns" style="margin-top:20px"><a class="lnk" id="outClose">close</a></div>
+  <div class="rowbtns" style="margin-top:20px"><a class="lnk" id="outClose">close.</a></div>
 </div></div>
 
 <div class="ov" id="ovKeys"><div class="card">
@@ -263,7 +262,7 @@
     <kbd>/</kbd><span>search</span><kbd>,</kbd><span>settings</span>
     <kbd>G</kbd><span>save states</span><kbd>E</kbd><span>export</span>
     <kbd>A</kbd><span>about</span><kbd>?</kbd><span>this list</span><kbd>Esc</kbd><span>close</span></div></div>
-  <div class="rowbtns"><a class="lnk" id="keysClose">close</a></div>
+  <div class="rowbtns"><a class="lnk" id="keysClose">close.</a></div>
 </div></div>
 
 <div class="ov" id="ovAbout"><div class="card">
@@ -288,10 +287,9 @@
       <a href="https://github.com/kenny-t-vo/rate-my-library" target="_blank" rel="noopener">github.com/kenny-t-vo/rate-my-library</a>
     </div>
   </div>
-  <div class="rowbtns"><a class="lnk" id="aboutClose">close</a></div>
+  <div class="rowbtns"><a class="lnk" id="aboutClose">close.</a></div>
 </div></div>
 
 <div id="scrim"></div>
-<div id="toast"></div>
 <script type="module" src="app.js"></script>
 </body></html>
