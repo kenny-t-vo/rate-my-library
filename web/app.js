@@ -647,19 +647,22 @@ function downloadAll(){
 
 // The exported pages are standalone files opened from disk, so the tokens are
 // inlined rather than imported from assets/type.css, and they carry no woff2:
-// display falls back to Times. Values are copied from type.css and must track
+// Long An shows where it is installed, else Times at its metrics, and display
+// falls back to Times. Values are copied from type.css and must track
 // it. Figures use the body face with tabular-nums, as they do in the app.
 const DOC_CSS=`*{box-sizing:border-box;margin:0;padding:0}
-@font-face{font-family:"Plantin fallback";src:local("TimesNewRomanPSMT"),local("Times New Roman");font-weight:400;font-style:normal;size-adjust:104%;ascent-override:69.5%;descent-override:30.5%;line-gap-override:0%}
-@font-face{font-family:"Plantin fallback";src:local("TimesNewRomanPS-ItalicMT"),local("Times New Roman Italic");font-weight:400;font-style:italic;size-adjust:104%;ascent-override:69.5%;descent-override:30.5%;line-gap-override:0%}
-@font-face{font-family:"Plantin fallback";src:local("TimesNewRomanPS-BoldMT"),local("Times New Roman Bold");font-weight:700;font-style:normal;size-adjust:104%;ascent-override:69.5%;descent-override:30.5%;line-gap-override:0%}
-@font-face{font-family:"Plantin fallback";src:local("TimesNewRomanPS-BoldItalicMT"),local("Times New Roman Bold Italic");font-weight:700;font-style:italic;size-adjust:104%;ascent-override:69.5%;descent-override:30.5%;line-gap-override:0%}
+@font-face{font-family:"Long An";src:local("LongAn-Light");font-weight:400;font-style:normal}
+@font-face{font-family:"Long An";src:local("LongAn-LightItalic");font-weight:400;font-style:italic}
+@font-face{font-family:"Long An";src:local("LongAn-Semibold");font-weight:600;font-style:normal}
+@font-face{font-family:"Long An fallback";src:local("TimesNewRomanPSMT"),local("Times New Roman");font-weight:400;font-style:normal;size-adjust:102.5%;ascent-override:99.6%;descent-override:33.8%;line-gap-override:0%}
+@font-face{font-family:"Long An fallback";src:local("TimesNewRomanPS-ItalicMT"),local("Times New Roman Italic");font-weight:400;font-style:italic;size-adjust:97.8%;ascent-override:104.1%;descent-override:33.3%;line-gap-override:0%}
+@font-face{font-family:"Long An fallback";src:local("TimesNewRomanPS-BoldMT"),local("Times New Roman Bold");font-weight:700;font-style:normal;size-adjust:101.3%;ascent-override:101.5%;descent-override:37.2%;line-gap-override:0%}
 :root{--bg:#fff;--fg:#111;--dim:#6f6f6f;--faint:#9a9a9a;--rule:#dcdcdc;--wash:#f2f2f7;
 --blue:#0000ee;--purple:#551a8b;
---body:"Plantin","Plantin MT Pro","Plantin fallback","Times New Roman",Times,"Liberation Serif","Hiragino Mincho ProN","Yu Mincho",serif;
+--body:"Long An","Long An fallback","Times New Roman",Times,"Liberation Serif","Hiragino Mincho ProN","Yu Mincho",serif;
 --display:"Times New Roman",Times,serif;
 --t1:22px;--t2:16px;--t3:14px;--t4:12.5px;--t5:11px;--t6:10.5px;
---s0:3px;--s1:6px;--s2:12px;--s3:22px;--s4:40px;--s5:72px;--track:-.01em;--track-label:.09em;--hair:.5px}
+--s0:3px;--s1:6px;--s2:12px;--s3:22px;--s4:40px;--s5:72px;--track:0;--track-label:.09em;--hair:.5px}
 @media (max-resolution:1.5dppx){:root{--hair:1px}}
 body{background:var(--bg);color:var(--fg);font:var(--t3)/1.5 var(--body);
 letter-spacing:var(--track);padding:var(--s5) var(--s4) calc(var(--s5) * 1.6)}

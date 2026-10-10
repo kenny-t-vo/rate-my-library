@@ -22,7 +22,8 @@
   --dot:5px;
   --prog:132px;
 
-  /* Redaction 35 at line-height 1.06: the distance from box top to cap top,
+  /* Hiep Hoa 35 (Redaction 35's metrics, checked 2026-10-09) at line-height
+     1.06: the distance from box top to cap top,
      so a title seats on the cover's top edge. Measured with canvas metrics,
      half-leading + (ascent - capHeight); Times wants -.201em, this face
      -.1255em. In em so it holds as --t1 changes. */
